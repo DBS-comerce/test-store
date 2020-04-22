@@ -15,15 +15,11 @@ import {
 import { connect, ConnectedProps } from 'react-redux';
 import Link from 'next/link';
 import { loadItemsData, loadCategoriesData } from '../../actions/items';
-import { Item, Category } from '../../reducers/types';
+import { Item, Category, CartItem } from '../../reducers/types';
 import { addItemToCart, deleteItemFromCart } from '../../actions/cart';
 import { RootState } from '../../reducers';
 
-type HomeProp = PropsFromRedux & {
-    children: JSX.Element[] | JSX.Element;
-};
-
-function Home(props: HomeProp): JSX.Element {
+function Home(props: PropsFromRedux): JSX.Element {
     useEffect(() => {
         props.loadItemsData();
         props.loadCategoriesData();
@@ -58,11 +54,11 @@ function Home(props: HomeProp): JSX.Element {
                     <CardText>{`${item.cost} $`}</CardText>
                     {props.cartItems &&
                     props.cartItems.filter((cartItem: Item) => cartItem.id === item.id).length > 0 ? (
-                        <Button color="danger" onClick={() => props.deleteItemFromCart(item.id)}>
+                        <Button color="danger" onClick={(): void => props.deleteItemFromCart(item.id)}>
                             REMOVE FROM CART
                         </Button>
                     ) : (
-                        <Button color="primary" onClick={() => props.addItemToCart(item)}>
+                        <Button color="primary" onClick={(): void => props.addItemToCart(item)}>
                             ADD TO CART
                         </Button>
                     )}
@@ -100,7 +96,7 @@ function Home(props: HomeProp): JSX.Element {
     );
 }
 
-const mapStateToProps = (state: RootState): any => {
+const mapStateToProps = (state: RootState): { items: Item[]; categories: Category[]; cartItems: CartItem[] } => {
     return {
         items: state.items.items,
         categories: state.items.categories,

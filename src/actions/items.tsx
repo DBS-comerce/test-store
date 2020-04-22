@@ -1,8 +1,13 @@
 import axios from 'axios';
 import { LOAD_CATEGORIES, LOAD_ITEMS } from '../reducers/types';
+import { ThunkAction } from 'redux-thunk';
+import { RootState } from '../reducers';
+import { ItemsActionTypes } from '../reducers/types';
 
-export function loadItemsData() {
-    return (dispatch: any) => {
+type ThunkResult<R> = ThunkAction<R, RootState, undefined, ItemsActionTypes>;
+
+export function loadItemsData(): ThunkResult<void> {
+    return (dispatch): void => {
         axios
             .get('http://www.mocky.io/v2/5e982fa93500007f00c47f6c')
             .then(function (response) {
@@ -16,8 +21,8 @@ export function loadItemsData() {
     };
 }
 
-export function loadCategoriesData() {
-    return (dispatch: any) => {
+export function loadCategoriesData(): ThunkResult<void> {
+    return (dispatch): void => {
         axios
             .get('http://www.mocky.io/v2/5e982f9c3500007a00c47f6b')
             .then(function (response) {

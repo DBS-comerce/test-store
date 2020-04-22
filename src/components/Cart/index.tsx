@@ -3,6 +3,7 @@ import { Button, Row, Col, Container, Table, Form, FormGroup, Label, Input } fro
 import { connect, ConnectedProps } from 'react-redux';
 import { deleteItemFromCart, clearCart } from '../../actions/cart';
 import { Item } from '../../reducers/types';
+import { RootState } from '../../reducers';
 import InputMask from 'react-input-mask';
 
 function Cart(props: PropsFromRedux): JSX.Element {
@@ -151,7 +152,7 @@ function Cart(props: PropsFromRedux): JSX.Element {
     );
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: RootState): { items: Item[] } => {
     return {
         items: state.cart.items,
     };

@@ -1,19 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
-import { connect } from 'react-redux';
-import { Item } from '../reducers/types';
+import { connect, ConnectedProps } from 'react-redux';
+import { CartItem } from '../reducers/types';
 import { RootState } from '../reducers';
 
-interface HeaderProps {
-    items?: Item[];
-}
-
-const Header = (props: HeaderProps): JSX.Element => {
-    const totalPrice =
-        props.items &&
-        props.items.reduce((accumulator: number, currentValue: Item) => {
-            return accumulator + currentValue.cost;
-        }, 0);
+const Header = (props: PropsFromRedux): JSX.Element => {
+    const totalPrice = props.items.reduce((accumulator: number, currentValue: CartItem) => {
+        return accumulator + currentValue.cost;
+    }, 0);
     return (
         <header
             style={{
@@ -55,10 +49,13 @@ const Header = (props: HeaderProps): JSX.Element => {
     );
 };
 
-const mapStateToProps = (state: RootState): HeaderProps => {
+const mapStateToProps = (state: RootState): { items: CartItem[] } => {
     return {
         items: state.cart.items,
     };
 };
 
-export default connect(mapStateToProps, null)(Header);
+const connector = connect(mapStateToProps, {});
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(Header);

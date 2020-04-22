@@ -4,7 +4,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { useRouter } from 'next/router';
 import { deleteItemFromCart, addItemToCart } from '../../actions/cart';
 import { loadItemsData } from '../../actions/items';
-import { Item as ItemType } from '../../reducers/types';
+import { Item as ItemType, CartItem } from '../../reducers/types';
 import { RootState } from '../../reducers';
 
 function Item(props: PropsFromRedux): JSX.Element {
@@ -30,11 +30,11 @@ function Item(props: PropsFromRedux): JSX.Element {
                                 <CardSubtitle>{item.descr}</CardSubtitle>
                                 <CardText>{item.cost + ' ' + '$'}</CardText>
                                 {props.cartItems.filter((cartItem: ItemType) => cartItem.id === item.id).length > 0 ? (
-                                    <Button color="danger" onClick={() => props.deleteItemFromCart(item.id)}>
+                                    <Button color="danger" onClick={(): void => props.deleteItemFromCart(item.id)}>
                                         REMOVE FROM CART
                                     </Button>
                                 ) : (
-                                    <Button onClick={() => props.addItemToCart(item)}>ADD TO CART</Button>
+                                    <Button onClick={(): void => props.addItemToCart(item)}>ADD TO CART</Button>
                                 )}
                             </CardBody>
                         </Card>
@@ -47,7 +47,7 @@ function Item(props: PropsFromRedux): JSX.Element {
     );
 }
 
-const mapStateToProps = (state: RootState): any => {
+const mapStateToProps = (state: RootState): { items: ItemType[]; cartItems: CartItem[] } => {
     return {
         items: state.items.items,
         cartItems: state.cart.items,

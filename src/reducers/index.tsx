@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 
-// reducers
 import itemsReducer from './items';
 import cartReducer from './cart';
 
